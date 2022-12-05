@@ -26,7 +26,6 @@ def algo():
             stacks[move_to].append(item)
         if how_many > 1:
             # Next, as both crates are moved from stack 2 to stack 1, they retain their order as well:
-            print(f'do something else...')
             temp_stack = deque()
             for idx in range(how_many):
                 item = stacks[move_from].pop()
