@@ -12,7 +12,7 @@ def algo() -> int:
 
     data_buffer = open("day6_input.txt").readlines().pop().strip()
 
-    small_buffer = deque(maxlen=4)
+    small_buffer = deque(maxlen=14)
     for idx, character in enumerate(data_buffer):
         small_buffer.append(character)
         print(f'buffer {small_buffer}')
@@ -24,7 +24,7 @@ def algo() -> int:
 
 def all_characters_different(small_buffer: deque) -> bool:
     small_set = set(small_buffer)
-    if len(small_set) == 4:
+    if len(small_set) == 14:
         return True
     return False
 
