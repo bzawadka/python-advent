@@ -30,7 +30,7 @@ def create_tree_from(commands) -> Node:
                     all_nodes_by_name[dir_name] = new_dir
                 else:
                     file_size, file_name = cmd.split(' ')
-                    new_file = Node(file_name, parent=current_dir, file_size=int(file_size), type='file')
+                    new_file = Node(file_name, parent=current_dir, size=int(file_size), type='file')
                     all_nodes_by_name[file_name] = new_file
     return root
 
@@ -51,11 +51,7 @@ def calculate_size_of_each_directory(root: Node):
         total_dir_size = 0
         print(f'children of {dir_node.name} are {dir_node.children}')
         for child in dir_node.children:
-            match child.__getattribute__('type'):
-                case 'file':
-                    total_dir_size += child.__getattribute__('file_size')
-                case 'dir':
-                    total_dir_size += child.__getattribute__('size')
+            total_dir_size += child.__getattribute__('size')
 
         dir_node.__setattr__('size', total_dir_size)
         print(f'{dir_node.name}, size={dir_node.size}')
