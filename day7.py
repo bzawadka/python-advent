@@ -2,7 +2,7 @@ from anytree import Node, RenderTree, PostOrderIter
 
 
 def create_tree_from(commands) -> Node:
-    root: Node = Node('root', directory_size=int(0), type='dir')
+    root: Node = Node('root', size=int(0), type='dir')
     current_dir: Node = root
 
     all_nodes_by_name = dict()
@@ -12,7 +12,6 @@ def create_tree_from(commands) -> Node:
         cmd = cmd_raw.strip()
         match cmd:
             case '$ cd /':
-                # print("cd root")
                 current_dir = root
             case '$ ls':
                 print("ls")
@@ -23,23 +22,15 @@ def create_tree_from(commands) -> Node:
             case _:
                 if cmd.startswith('$ cd'):
                     _, _, target_dir_name = cmd.split(' ')
-                    # print(f'cd {target_dir_name}')
                     target_dir = all_nodes_by_name.get(target_dir_name)
                     current_dir = target_dir
                 elif cmd.startswith('dir'):
                     _, dir_name = cmd.split(' ')
-                    # print(f'dir {dir_name}')
-                    new_dir = Node(dir_name, parent=current_dir, directory_size=int(0), type='dir')
-
+                    new_dir = Node(dir_name, parent=current_dir, size=int(0), type='dir')
                     all_nodes_by_name[dir_name] = new_dir
                 else:
                     file_size, file_name = cmd.split(' ')
-                    # print(f' file creation {file_name}')
                     new_file = Node(file_name, parent=current_dir, file_size=int(file_size), type='file')
-
-                    s = new_file.__getattribute__('file_size')
-                    t = new_file.__getattribute__('type')
-                    # print(f'file size {s} {t}')
                     all_nodes_by_name[file_name] = new_file
     return root
 
@@ -64,22 +55,22 @@ def calculate_size_of_each_directory(root: Node):
                 case 'file':
                     total_dir_size += child.__getattribute__('file_size')
                 case 'dir':
-                    total_dir_size += child.__getattribute__('directory_size')
+                    total_dir_size += child.__getattribute__('size')
 
-        dir_node.__setattr__('directory_size', total_dir_size)
-        print(f'{dir_node.name}, size={dir_node.directory_size}')
+        dir_node.__setattr__('size', total_dir_size)
+        print(f'{dir_node.name}, size={dir_node.size}')
 
 
 def sum_size_of_small_directories(root: Node):
     print('--- filter dirs with size smaller than 100000')
     result_dirs = PostOrderIter(root, filter_=lambda n: n.__getattribute__('type') == 'dir' and n.__getattribute__(
-        'directory_size') <= 100000)
+        'size') <= 100000)
     # print([dire.name for dire in result_dirs])
 
     result = 0
     for d in result_dirs:
         print(d.name)
-        result = result + d.__getattribute__('directory_size')
+        result = result + d.__getattribute__('size')
 
     return result
 
