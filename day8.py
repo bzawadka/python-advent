@@ -1,5 +1,5 @@
 def algo() -> int:
-    print("hello, day 7: Treetop Tree House")
+    print("hello, day 8: Treetop Tree House")
     # determine whether there is enough tree cover here to keep a tree house hidden
     # count the number of trees that are visible from outside the grid
     #   example: With 16 trees visible on the edge and another 5 visible in the interior,
