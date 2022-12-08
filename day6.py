@@ -10,24 +10,21 @@ from collections import deque
 def algo() -> int:
     print("hello, day 6: Tuning Trouble")
 
-    data_buffer = open("day6_input.txt").readlines().pop().strip()
+    data_buffer = open("day6_input.txt").read().strip()
 
     small_buffer = deque(maxlen=14)
+
     for idx, character in enumerate(data_buffer):
         small_buffer.append(character)
-        print(f'buffer {small_buffer}')
-        if all_characters_different(small_buffer):
+
+        # Check if all characters in the deque are different
+        if len(set(small_buffer)) == 14:
+            # starting sequence index
             return idx + 1
 
     return 0
 
 
-def all_characters_different(small_buffer: deque) -> bool:
-    small_set = set(small_buffer)
-    if len(small_set) == 14:
-        return True
-    return False
-
-
 if __name__ == '__main__':
     print(f'result: {algo()}')
+    # 3534 is the expected result
