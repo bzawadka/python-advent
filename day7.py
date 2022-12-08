@@ -19,11 +19,14 @@ def create_tree_from(commands) -> Node:
                 if cmd.startswith('$ cd'):
                     _, _, target_dir_name = cmd.split(' ')
 
-                    selected_child = current_dir
-                    for child in current_dir.children:
-                        if child.name == target_dir_name:
-                            selected_child = child
-                            break
+                    # selected_child = current_dir
+                    # for child in current_dir.children:
+                    #     if child.name == target_dir_name:
+                    #         selected_child = child
+                    #         break
+
+                    selected_child = next(child for child in current_dir.children if child.name == target_dir_name)
+
                     current_dir = selected_child
 
                 elif cmd.startswith('dir'):
@@ -49,8 +52,11 @@ def calculate_size_of_each_directory(root: Node):
     for dir_node in PostOrderIter(root, filter_=lambda n: n.type == 'dir'):
         total_dir_size = 0
         # print(f' children of {dir_node.name} are {dir_node.children}')
-        for child in dir_node.children:
-            total_dir_size += child.__getattribute__('size')
+        # for child in dir_node.children:
+        #     total_dir_size += child.__getattribute__('size')
+
+        # Use a list comprehension to get the sizes of all children in a single line of code
+        total_dir_size = sum([child.size for child in dir_node.children])
 
         dir_node.__setattr__('size', total_dir_size)
         print(f'{dir_node.name}, size={dir_node.size}')
@@ -58,7 +64,8 @@ def calculate_size_of_each_directory(root: Node):
 
 def sum_size_of_small_directories(root: Node):
     print('--- filter dirs with size smaller than 100000')
-    result_dirs = PostOrderIter(root, filter_=lambda n: n.__getattribute__('type') == 'dir' and n.__getattribute__('size') <= 100000)
+    result_dirs = PostOrderIter(root, filter_=lambda n: n.__getattribute__('type') == 'dir' and n.__getattribute__(
+        'size') <= 100000)
     result = 0
     for d in result_dirs:
         result = result + d.__getattribute__('size')
