@@ -28,6 +28,9 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
     head_x = 0
     head_y = 0
 
+    positions_tail_visited_set = set()
+    positions_tail_visited_set.add(current_tail_position_as_str())
+
     for instr in instructions:
         match instr.cmd:
             case 'R':
@@ -44,11 +47,18 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     head_y -= 1
             case _:
                 raise SyntaxError
-        print(f'head is [{head_x}][{head_y}]')
 
-        visualize_position(head_x, head_y, 'H')
+        if debug:
+            print(f'head is [{head_x}][{head_y}]')
+            visualize_position(head_x, head_y, 'H')
 
-    return 0
+    if debug:
+        print(f'positions tail visited: {positions_tail_visited_set}')
+    return len(positions_tail_visited_set)
+
+
+def current_tail_position_as_str():
+    return str.format('{}{}', tail_x, tail_y)
 
 
 def visualize_position(x: int, y: int, character: str):
@@ -66,5 +76,7 @@ def visualize_position(x: int, y: int, character: str):
 if __name__ == '__main__':
     debug = True
     grid_size = 6
+    tail_x = 0
+    tail_y = 0
     # How many positions does the tail of the rope visit at least once?
     print(f'result: {algo()}')
