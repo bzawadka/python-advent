@@ -15,11 +15,9 @@ def algo() -> int:
 
 
 def read_instructions() -> list[Instr]:
-    instructions_raw = open("day9_input.txt").readlines()
+    instructions_raw = open("day9_test_input3.txt").readlines()
     instructions_lines = [line.strip() for line in instructions_raw]
     instructions = [Instr(it.split(" ")[0], int(it.split(" ")[1])) for it in instructions_lines]
-    if debug:
-        print(instructions)
     return instructions
 
 
@@ -52,6 +50,13 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         # if head and tail were on the same position
                         if head_y == tail_y and head_x - 1 == tail_x:
                             print()  # do nothing
+                        # if head and tail were on diagonal after previous move
+                        elif tail_x + 2 == head_x:
+                            tail_x += 1
+                            if tail_y + 1 == head_y:
+                                tail_y += 1
+                            if head_y + 1 == tail_y:
+                                tail_y -= 1
                         # if head and tail were next to each other, but...
                         elif head_changed_direction:
                             print()  # do nothing
@@ -134,7 +139,13 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         # if head and tail were on the same position
                         if head_y - 1 == tail_y and head_x == tail_x:
                             print()  # do nothing
-                        # if head and tail were next to each other, but...
+                        # if head and tail were on diagonal after previous move
+                        elif tail_y + 2 == head_y:
+                            tail_y += 1
+                            if tail_x + 1 == head_x:
+                                tail_x += 1
+                            if head_x + 1 == tail_x:
+                                tail_x -= 1
                         elif head_changed_direction:
                             print()  # do nothing
                         # if head just got closer to the tail - from diagonal to adjacent
@@ -246,8 +257,8 @@ def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_i
 
 
 if __name__ == '__main__':
-    debug = False
-    grid_size = 100
+    debug = True
+    grid_size = 10
     tail_x = 0
     tail_y = 0
     positions_tail_visited_set = set()
