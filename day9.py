@@ -37,9 +37,10 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
 
     positions_tail_visited_set = set()
     positions_tail_visited_set.add(current_tail_position_as_str())
+    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
     for instr in instructions:
-        print(f'go to {instr.cmd} step {instr.step}')
+        print(f' == {instr.cmd} == {instr.step}')
         match instr.cmd:
             case 'R':
                 for i in range(0, instr.step):
@@ -71,7 +72,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                             else:
                                 # go right diagonally - up or down
                                 tail_x += 1
-                                print('if head is below tail, go right bottom with the tail')
+                                # print('if head is below tail, go right bottom with the tail')
                                 # tail_y = tail_y - 1 if head_y < tail_y else tail_y + 1
                                 if head_y < tail_y:
                                     tail_y -= 1
@@ -79,6 +80,8 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                     tail_y += 1
                     else:
                         tail_x += 1
+                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+
             case 'L':
                 for i in range(0, instr.step):
                     head_x -= 1
@@ -105,7 +108,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         else:
                             # go left diagonally - up or down
                             tail_x -= 1
-                            print('if head is below tail, go left bottom with the tail')
+                            # print('if head is below tail, go left bottom with the tail')
                             # tail_y = tail_y - 1 if head_y < tail_y else tail_y + 1
                             if head_y < tail_y:
                                 tail_y -= 1
@@ -113,6 +116,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                 tail_y += 1
                     else:
                         tail_x -= 1
+                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'U':
                 for i in range(0, instr.step):
@@ -147,19 +151,22 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                 tail_x += 1
                     else:
                         tail_y += 1
+                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'D':
                 for i in range(0, instr.step):
                     head_y -= 1
                     update_head_direction_to('vertical')
+                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+
             case _:
                 raise SyntaxError
 
         # where is head
-
-        if debug:
-            # print(f'head is [{head_x}][{head_y}]')
-            visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+        #
+        # if debug:
+        #     # print(f'head is [{head_x}][{head_y}]')
+        #     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
     if debug:
         print(f'positions tail visited: {positions_tail_visited_set}')
@@ -175,7 +182,7 @@ def update_head_direction_to(direction: str):
     head_direction = direction
     if previous_head_direction != 'undefined' and head_direction != previous_head_direction:
         head_changed_direction = True
-        print(f'what a twist of direction from {previous_head_direction} to {direction}!')
+        # print(f'what a twist of direction from {previous_head_direction} to {direction}!')
 
 
 def current_tail_position_as_str():
@@ -190,8 +197,8 @@ def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_i
     if x == a and y == b:
         grid[grid_size - 1 - y][x] = first_icon + second_icon
 
-    print('y')
-    print('^')
+    # print('y')
+    # print('^')
     for line in grid:
         print(f'| {line}')
     print('o---------------------> x')
