@@ -85,7 +85,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     else:
                         tail_x += 1
                     mark_current_tail_position_as_visited()
-                    if debug:
+                    if trace:
                         visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'L':
@@ -97,7 +97,14 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     if i == 0:
                         # if head and tail were on the same position
                         if head_y == tail_y and head_x + 1 == tail_x:
-                            print()  # do nothing
+                            print('')  # do nothing
+                        # if head and tail were on diagonal after previous move
+                        elif head_x + 2 == tail_x:
+                            tail_x -= 1
+                            if tail_y + 1 == head_y:
+                                tail_y += 1
+                            if head_y + 1 == tail_x:
+                                tail_y -= 1
                         # if head and tail were next to each other, but...
                         elif head_changed_direction:
                             print()  # do nothing
@@ -126,7 +133,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         tail_x -= 1
 
                     mark_current_tail_position_as_visited()
-                    if debug:
+                    if trace:
                         visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'U':
@@ -156,7 +163,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                             tail_y += 1
                     # in the second move
                     elif i == 1 or i == 2:
-                        if head_y -1 == tail_y:
+                        if head_y - 1 == tail_y:
                             print()  # do nothing
                         else:
                             if not head_changed_direction:
@@ -173,7 +180,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         tail_y += 1
 
                     mark_current_tail_position_as_visited()
-                    if debug:
+                    if trace:
                         visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'D':
@@ -212,11 +219,13 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         tail_y -= 1
 
                     mark_current_tail_position_as_visited()
-                    if debug:
+                    if trace:
                         visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
-
             case _:
                 raise SyntaxError
+
+        if debug:
+            visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
     if debug:
         print(f'positions tail visited: {positions_tail_visited_set}')
@@ -258,6 +267,7 @@ def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_i
 
 if __name__ == '__main__':
     debug = True
+    trace = False
     grid_size = 10
     tail_x = 0
     tail_y = 0
