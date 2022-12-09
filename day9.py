@@ -15,7 +15,7 @@ def algo() -> int:
 
 
 def read_instructions() -> list[Instr]:
-    instructions_raw = open("day9_test_input.txt").readlines()
+    instructions_raw = open("day9_input.txt").readlines()
     instructions_lines = [line.strip() for line in instructions_raw]
     instructions = [Instr(it.split(" ")[0], int(it.split(" ")[1])) for it in instructions_lines]
     if debug:
@@ -80,7 +80,8 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     else:
                         tail_x += 1
                     mark_current_tail_position_as_visited()
-                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                    if debug:
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'L':
                 for i in range(0, instr.step):
@@ -120,7 +121,8 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         tail_x -= 1
 
                     mark_current_tail_position_as_visited()
-                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                    if debug:
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'U':
                 for i in range(0, instr.step):
@@ -142,22 +144,26 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                             # tail was already behind the head, direction stays - tail shall continue
                             tail_y += 1
                     # in the second move
-                    elif i == 1:
-                        if not head_changed_direction:
-                            tail_y += 1
+                    elif i == 1 or i == 2:
+                        if head_y -1 == tail_y:
+                            print()  # do nothing
                         else:
-                            # go up diagonally - right or left
-                            tail_y += 1
-                            # print('if head is left from tail, go up left with the tail')
-                            if head_x < tail_x:
-                                tail_x -= 1
-                            elif head_x > tail_x:
-                                tail_x += 1
+                            if not head_changed_direction:
+                                tail_y += 1
+                            else:
+                                # go up diagonally - right or left
+                                tail_y += 1
+                                # print('if head is left from tail, go up left with the tail')
+                                if head_x < tail_x:
+                                    tail_x -= 1
+                                elif head_x > tail_x:
+                                    tail_x += 1
                     else:
                         tail_y += 1
 
                     mark_current_tail_position_as_visited()
-                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                    if debug:
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'D':
                 for i in range(0, instr.step):
@@ -178,21 +184,25 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                             # tail was already behind the head, direction stays - tail shall continue
                             tail_y -= 1
                     # in the second move
-                    elif i == 1:
-                        if not head_changed_direction:
-                            tail_y -= 1
+                    elif i == 1 or i == 2:
+                        if head_y + 1 == tail_y:
+                            print()  # do nothing
                         else:
-                            # go down diagonally - right or left
-                            tail_y -= 1
-                            if head_x > tail_x:
-                                tail_x += 1
-                            elif head_x < tail_x:
-                                tail_x -= 1
+                            if not head_changed_direction:
+                                tail_y -= 1
+                            else:
+                                # go down diagonally - right or left
+                                tail_y -= 1
+                                if head_x > tail_x:
+                                    tail_x += 1
+                                elif head_x < tail_x:
+                                    tail_x -= 1
                     else:
                         tail_y -= 1
 
                     mark_current_tail_position_as_visited()
-                    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                    if debug:
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case _:
                 raise SyntaxError
@@ -236,11 +246,13 @@ def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_i
 
 
 if __name__ == '__main__':
-    debug = True
-    grid_size = 6
+    debug = False
+    grid_size = 100
     tail_x = 0
     tail_y = 0
     positions_tail_visited_set = set()
 
     # How many positions does the tail of the rope visit at least once?
     print(f'result: {algo()}')
+    # 6428 your answer is too high
+    # 6321 That's not the right answer; your answer is too low
