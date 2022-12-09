@@ -146,7 +146,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         else:
                             # go up diagonally - right or left
                             tail_y += 1
-                            print('if head is left from tail, go up left with the tail')
+                            # print('if head is left from tail, go up left with the tail')
                             if head_x < tail_x:
                                 tail_x -= 1
                             elif head_x > tail_x:
@@ -159,6 +159,34 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                 for i in range(0, instr.step):
                     head_y -= 1
                     update_head_direction_to('vertical')
+
+                    # in the first move
+                    if i == 0:
+                        # if head and tail were on the same position
+                        if head_y + 1 == tail_y and head_x == tail_x:
+                            print()  # do nothing
+                        elif head_changed_direction:    # POTENTIAL PROBLEM!!
+                            print()  # do nothing
+                        # if head just got closer to the tail - from diagonal to adjacent
+                        elif head_y == tail_y:
+                            print()  # do nothing
+                        else:
+                            # tail was already behind the head, direction stays - tail shall continue
+                            tail_y -= 1
+                    # in the second move
+                    elif i == 1:
+                        if not head_changed_direction:
+                            tail_y -= 1
+                        else:
+                            # go down diagonally - right or left
+                            tail_y -= 1
+                            if head_x > tail_x:
+                                tail_x += 1
+                            elif head_x < tail_x:
+                                tail_x -= 1
+                    else:
+                        tail_y -= 1
+
                     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case _:
