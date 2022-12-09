@@ -54,22 +54,29 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         # if head and tail were next to each other, but...
                         elif head_changed_direction:
                             print()  # do nothing
+                        # if head just got closer to the tail - from diagonal to adjacent
+                        elif head_x == tail_x:
+                            print()  # do nothing
                         else:
                             # tail was already behind the head, direction stays - tail shall continue
                             tail_x += 1
                     # in the second move
-                    elif i == 1:
-                        if not head_changed_direction:
-                            tail_x += 1
+                    elif i == 1 or i == 2:
+                        # if head and tail are touching diagonally
+                        if tail_x + 1 == head_x:
+                            print()  # do nothing
                         else:
-                            # go right diagonally - up or down
-                            tail_x += 1
-                            print('if head is below tail, go right bottom with the tail')
-                            # tail_y = tail_y - 1 if head_y < tail_y else tail_y + 1
-                            if head_y < tail_y:
-                                tail_y -= 1
+                            if not head_changed_direction:
+                                tail_x += 1
                             else:
-                                tail_y += 1
+                                # go right diagonally - up or down
+                                tail_x += 1
+                                print('if head is below tail, go right bottom with the tail')
+                                # tail_y = tail_y - 1 if head_y < tail_y else tail_y + 1
+                                if head_y < tail_y:
+                                    tail_y -= 1
+                                else:
+                                    tail_y += 1
                     else:
                         tail_x += 1
             case 'L':
@@ -84,6 +91,9 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                             print()  # do nothing
                         # if head and tail were next to each other, but...
                         elif head_changed_direction:
+                            print()  # do nothing
+                        # if head just got closer to the tail - from diagonal to adjacent
+                        elif head_x == tail_x:
                             print()  # do nothing
                         else:
                             # tail was already behind the head, direction stays - tail shall continue
@@ -116,6 +126,9 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                             print()  # do nothing
                         # if head and tail were next to each other, but...
                         elif head_changed_direction:
+                            print()  # do nothing
+                        # if head just got closer to the tail - from diagonal to adjacent
+                        elif head_y == tail_y:
                             print()  # do nothing
                         else:
                             # tail was already behind the head, direction stays - tail shall continue
