@@ -34,10 +34,10 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
     head_y = 0
     global tail_x
     global tail_y
+    global positions_tail_visited_set
 
-    positions_tail_visited_set = set()
-    positions_tail_visited_set.add(current_tail_position_as_str())
     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+    mark_current_tail_position_as_visited()
 
     for instr in instructions:
         print(f' == {instr.cmd} {instr.step} ========================')
@@ -79,6 +79,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                     tail_y += 1
                     else:
                         tail_x += 1
+                    mark_current_tail_position_as_visited()
                     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'L':
@@ -117,7 +118,8 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                     tail_y += 1
                     else:
                         tail_x -= 1
-                        print(f'L i={i} move to [{tail_x}][{tail_y}]')
+
+                    mark_current_tail_position_as_visited()
                     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'U':
@@ -153,6 +155,8 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                 tail_x += 1
                     else:
                         tail_y += 1
+
+                    mark_current_tail_position_as_visited()
                     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case 'D':
@@ -165,7 +169,7 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                         # if head and tail were on the same position
                         if head_y + 1 == tail_y and head_x == tail_x:
                             print()  # do nothing
-                        elif head_changed_direction:    # POTENTIAL PROBLEM!!
+                        elif head_changed_direction:  # POTENTIAL PROBLEM!!
                             print()  # do nothing
                         # if head just got closer to the tail - from diagonal to adjacent
                         elif head_y == tail_y:
@@ -187,16 +191,11 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     else:
                         tail_y -= 1
 
+                    mark_current_tail_position_as_visited()
                     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
             case _:
                 raise SyntaxError
-
-        # where is head
-        #
-        # if debug:
-        #     # print(f'head is [{head_x}][{head_y}]')
-        #     visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
 
     if debug:
         print(f'positions tail visited: {positions_tail_visited_set}')
@@ -215,8 +214,9 @@ def update_head_direction_to(direction: str):
         # print(f'what a twist of direction from {previous_head_direction} to {direction}!')
 
 
-def current_tail_position_as_str():
-    return str.format('{}{}', tail_x, tail_y)
+def mark_current_tail_position_as_visited():
+    item = str.format('{}{}', tail_x, tail_y)
+    positions_tail_visited_set.add(item)
 
 
 def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_icon: str):
@@ -240,6 +240,7 @@ if __name__ == '__main__':
     grid_size = 6
     tail_x = 0
     tail_y = 0
+    positions_tail_visited_set = set()
 
     # How many positions does the tail of the rope visit at least once?
     print(f'result: {algo()}')
