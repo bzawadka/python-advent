@@ -1,12 +1,13 @@
 import string
-from collections import defaultdict, deque
+from collections import deque
 
 
 def algo() -> int:
-    grid_heights = defaultdict()
+    heights = dict()
     start_point = (-1, -1)
     end_goal = (-1, -1)
     result = -1
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
 
     print("hello, day 12: Hill Climbing Algorithm")
 
@@ -22,30 +23,31 @@ def algo() -> int:
         for x, char in enumerate(line):
             if char == "S":
                 start_point = (x, y)
-                grid_heights[(x, y)] = 0
+                heights[(x, y)] = 0
             elif char == "E":
                 end_goal = (x, y)
-                grid_heights[(x, y)] = 25
+                heights[(x, y)] = 25
             else:
-                grid_heights[(x, y)] = string.ascii_lowercase.index(char)
+                heights[(x, y)] = string.ascii_lowercase.index(char)
 
     visited = set()
     visited.add(start_point)
 
     q = deque()
-    q.appendleft((0, start_point))
-    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    distance = 0
+    q.appendleft((distance, start_point))
 
     while q:
-        current_distance, location = q.popleft()
-        if location == end_goal:
+        current_distance, current_location = q.popleft()
+        if current_location == end_goal:
             result = current_distance
             break
 
-        current_height = grid_heights[location]
-        x, y = location
+        current_height = heights[current_location]
+        x, y = current_location
         for dx, dy in directions:
             new_x, new_y = x + dx, y + dy
+            # don't go outside the grid
             if new_x < 0 or new_x >= width or new_y < 0 or new_y >= height:
                 continue
 
@@ -53,7 +55,7 @@ def algo() -> int:
             if neighbour_location in visited:
                 continue
 
-            neighbour_height = grid_heights[neighbour_location]
+            neighbour_height = heights[neighbour_location]
             if current_height + 1 >= neighbour_height:
                 new_distance = current_distance + 1
                 neighbour_entry = (new_distance, neighbour_location)
