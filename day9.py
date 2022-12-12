@@ -157,9 +157,11 @@ if __name__ == '__main__':
     print(f'result: {algo()}')
     # 6428 your answer is too high
 
+    # 6377 - That's not the right answer
     # 6376 - That's the right answer!
-
     # 6374 - that's not the right answer
-    # 6377 That's not the right answer
+
     # 6355, 6356 - your answer is too low.
     # 6321 - your answer is too low
+
+    # https://adventofcode.com/2022/day/9#part2
