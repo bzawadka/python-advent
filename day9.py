@@ -43,17 +43,14 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     previous_head_x = head_x
                     head_x += 1
 
-                    # tail moves along
                     if tail_x + 1 == previous_head_x:
-                        if head_y == tail_y:
-                            tail_x += 1
+                        # tail moves along
+                        tail_x += 1
                         # tail moves diagonally
-                        elif tail_y + 1 == head_y or head_y + 1 == tail_y:
-                            tail_x += 1
-                            if tail_y + 1 == head_y:
-                                tail_y += 1
-                            if head_y + 1 == tail_y:
-                                tail_y -= 1
+                        if tail_y + 1 == head_y:
+                            tail_y += 1
+                        if tail_y - 1 == head_y:
+                            tail_y -= 1
                     # otherwise don't move tail
 
                     mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
@@ -65,17 +62,14 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     previous_head_x = head_x
                     head_x -= 1
 
-                    # tail moves along
                     if tail_x - 1 == previous_head_x:
-                        if head_y == tail_y:
-                            tail_x -= 1
+                        # tail moves along
+                        tail_x -= 1
                         # tail moves diagonally
-                        elif tail_y + 1 == head_y or head_y + 1 == tail_y:
-                            tail_x -= 1
-                            if tail_y + 1 == head_y:
-                                tail_y += 1
-                            if head_y + 1 == tail_y:
-                                tail_y -= 1
+                        if tail_y + 1 == head_y:
+                            tail_y += 1
+                        if tail_y - 1 == head_y:
+                            tail_y -= 1
                     # otherwise don't move tail
 
                     mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
@@ -87,17 +81,14 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     previous_head_y = head_y
                     head_y += 1
 
-                    # tail moves along
                     if tail_y + 1 == previous_head_y:
-                        if head_x == tail_x:
-                            tail_y += 1
+                        # tail moves along
+                        tail_y += 1
                         # tail moves diagonally
-                        elif tail_x + 1 == head_x or tail_x - 1 == head_x:
-                            tail_y += 1
-                            if tail_x + 1 == head_x:
-                                tail_x += 1
-                            if tail_x - 1 == head_x:
-                                tail_x -= 1
+                        if tail_x + 1 == head_x:
+                            tail_x += 1
+                        if tail_x - 1 == head_x:
+                            tail_x -= 1
                     # otherwise don't move tail
 
                     mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
@@ -109,17 +100,14 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     previous_head_y = head_y
                     head_y -= 1
 
-                    # tail moves along
                     if tail_y - 1 == previous_head_y:
-                        if head_x == tail_x:
-                            tail_y -= 1
+                        # tail moves along
+                        tail_y -= 1
                         # tail moves diagonally
-                        elif tail_x + 1 == head_x or tail_x - 1 == head_x:
-                            tail_y -= 1
-                            if tail_x + 1 == head_x:
-                                tail_x += 1
-                            if tail_x - 1 == head_x:
-                                tail_x -= 1
+                        if tail_x + 1 == head_x:
+                            tail_x += 1
+                        if tail_x - 1 == head_x:
+                            tail_x -= 1
 
                     mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
                     if trace:
