@@ -15,7 +15,7 @@ def algo() -> int:
 
 
 def read_instructions() -> list[Instr]:
-    instructions_raw = open("day9_input.txt").readlines()
+    instructions_raw = open(instruction_file).readlines()
     instructions_lines = [line.strip() for line in instructions_raw]
     instructions = [Instr(it.split(" ")[0], int(it.split(" ")[1])) for it in instructions_lines]
     return instructions
@@ -28,14 +28,15 @@ head_changed_direction = False
 
 def calculate_how_many_positions_tail_visited(instructions) -> int:
     # positions of head and tail
-    head_x = 0
-    head_y = 0
-    global tail_x
-    global tail_y
-    global positions_tail_visited_set
+    grid_size = 150
+    head_x = 75
+    head_y = 75
+    tail_x = 75
+    tail_y = 75
+    positions_tail_visited_set = set()
 
-    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
-    mark_current_tail_position_as_visited()
+    visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T', grid_size)
+    mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
 
     for instr in instructions:
         print(f' == {instr.cmd} {instr.step} ========================')
@@ -84,9 +85,9 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                                     tail_y += 1
                     else:
                         tail_x += 1
-                    mark_current_tail_position_as_visited()
+                    mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
                     if trace:
-                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T', grid_size)
 
             case 'L':
                 for i in range(0, instr.step):
@@ -132,9 +133,9 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     else:
                         tail_x -= 1
 
-                    mark_current_tail_position_as_visited()
+                    mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
                     if trace:
-                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T', grid_size)
 
             case 'U':
                 for i in range(0, instr.step):
@@ -179,9 +180,9 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     else:
                         tail_y += 1
 
-                    mark_current_tail_position_as_visited()
+                    mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
                     if trace:
-                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T', grid_size)
 
             case 'D':
                 for i in range(0, instr.step):
@@ -225,17 +226,21 @@ def calculate_how_many_positions_tail_visited(instructions) -> int:
                     else:
                         tail_y -= 1
 
-                    mark_current_tail_position_as_visited()
+                    mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set)
                     if trace:
-                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+                        visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T', grid_size)
             case _:
                 raise SyntaxError
 
         if debug:
-            visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T')
+            visualize_position(head_x, head_y, 'H', tail_x, tail_y, 'T', grid_size)
+
+        if head_x < 0 or head_y < 0 or tail_x < 0 or tail_y < 0:
+            raise IndexError(f'head[{head_x}][{head_y}] vs tail[{tail_x}][{tail_y}]')
 
     if debug:
         print(f'positions tail visited: {positions_tail_visited_set}')
+
     return len(positions_tail_visited_set)
 
 
@@ -251,12 +256,12 @@ def update_head_direction_to(direction: str):
         # print(f'what a twist of direction from {previous_head_direction} to {direction}!')
 
 
-def mark_current_tail_position_as_visited():
+def mark_current_tail_position_as_visited(tail_x, tail_y, positions_tail_visited_set):
     item = str.format('{}{}', tail_x, tail_y)
     positions_tail_visited_set.add(item)
 
 
-def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_icon: str):
+def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_icon: str, grid_size):
     grid = [[0] * grid_size for _ in range(grid_size)]
     # bottom left corner is [0][0]
     grid[grid_size - 1 - y][x] = first_icon
@@ -273,15 +278,14 @@ def visualize_position(x: int, y: int, first_icon: str, a: int, b: int, second_i
 
 
 if __name__ == '__main__':
+    instruction_file = 'day9_input.txt'
     debug = False
     trace = False
-    grid_size = 100
-    tail_x = 0
-    tail_y = 0
-    positions_tail_visited_set = set()
 
     # How many positions does the tail of the rope visit at least once?
     print(f'result: {algo()}')
     # 6428 your answer is too high
-    # 6355 That's not the right answer; your answer is too low.
-    # 6321 That's not the right answer; your answer is too low
+    # 6374 - that's not the right answer
+    # 6377 That's not the right answer
+    # 6355, 6356 - your answer is too low.
+    # 6321 - your answer is too low
