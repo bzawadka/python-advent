@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 # clock circuit, cycle, signal strength
-from typing import Optional
 
 
 @dataclass
@@ -39,17 +38,13 @@ def calculate_sum_of_signal_strengths(instructions: list[Instr]) -> int:
 
     cycle_no = 1
     register_val = 1
-
     sum_of_strength = 0
 
     while scheduled_inst:
         # read instruction
         if cycle_no < len(instructions):
             new_instr: Instr = instructions[cycle_no]
-            if scheduled_inst:
-                current_max_cycle = max(sorted(scheduled_inst))
-            else:
-                current_max_cycle = cycle_no + 1
+            current_max_cycle = max(sorted(scheduled_inst))
 
             match new_instr.cmd:
                 case 'noop':
@@ -57,7 +52,8 @@ def calculate_sum_of_signal_strengths(instructions: list[Instr]) -> int:
                 case 'addx':
                     scheduled_inst[current_max_cycle + 2] = new_instr
 
-        print(f'cycle: {cycle_no}, register: {register_val}')
+        if trace:
+            print(f'cycle: {cycle_no}, register: {register_val}')
 
         sum_of_strength += calculate_signal_strength(20, cycle_no, register_val)
         sum_of_strength += calculate_signal_strength(60, cycle_no, register_val)
@@ -71,10 +67,12 @@ def calculate_sum_of_signal_strengths(instructions: list[Instr]) -> int:
         if cycle_no == cycle_no_for_exec:
             instr: Instr = scheduled_inst[cycle_no_for_exec]
             register_val += instr.value
-            print(f'I shall execute {instr} at the end of cycle {cycle_no}')
             del scheduled_inst[cycle_no_for_exec]
+            if trace:
+                print(f'I shall execute {instr} at the end of cycle {cycle_no}')
 
-        print(f'cycle: {cycle_no}, register at the end of cycle: {register_val}')
+        if trace:
+            print(f'cycle: {cycle_no}, register at the end of cycle: {register_val}')
 
         cycle_no += 1
 
