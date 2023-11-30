@@ -27,8 +27,8 @@ def in_the_right_order(pair_l: str, pair_r: str) -> bool:
             return True
         elif int(first_l) > int(first_r):
             return False
-        else
-            return in_the_right_order()
+        else:
+            return in_the_right_order("just", "to compile")
 
     # plain lists - compare the items
 
