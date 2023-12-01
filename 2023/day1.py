@@ -7,25 +7,19 @@ def algo_part_one(input_file_name) -> int:
 
     sum_val = 0
     for line in lines:
-        first_d = -1
-        last_d = -1
-        number = 0
-        for c in line:
-            if c.isdigit():
-                if first_d == -1:
-                    first_d = c
-                else:
-                    last_d = c
-
-        if last_d == -1:
-            last_d = first_d
-
+        first_d = find_first_digit(line)
+        last_d = find_first_digit(line[::-1])
         number = int(first_d) * 10 + int(last_d)
-
-        print(number)
         sum_val += number
 
     return sum_val
+
+
+def find_first_digit(line):
+    for c in line:
+        if c.isdigit():
+            return int(c)
+
 
 def algo(input_file_name) -> int:
     print("running algo..." + input_file_name)
@@ -92,7 +86,9 @@ if __name__ == '__main__':
     input_file = f'input/day{day}/input.txt'
 
     # run with test file and expect given result
-    assert 281 == algo(test_input_file)
+    assert 142 == algo_part_one(test_input_file)
 
     # run with non-test file": 1, "and print the result
-    print(f'result: {algo(input_file)}')
+    assert 55607 == algo_part_one(input_file)
+
+    print(f'result: {algo_part_one(input_file)}')
