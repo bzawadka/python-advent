@@ -1,8 +1,10 @@
-# The Elf would first like to know which games would have been possible
-# if the bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes?
 import re
 
+from common import read_file_to_list
 
+
+# The Elf would first like to know which games would have been possible
+# if the bag contained only 12 red cubes, 13 green cubes, and 14 blue cubes?
 def algo_part_one(input_file_name) -> int:
     print("running algo part one..." + input_file_name)
     lines = read_file_to_list(input_file_name)
@@ -17,7 +19,6 @@ def algo_part_one(input_file_name) -> int:
         rounds = game.split(';')
         for r in rounds:
             round_possible = True
-            # check if the round is possible if not break the loop
             pairs = re.findall(r'\d+\s\w+', r)
             for p in pairs:
                 (amount, color) = str(p).split(' ')
@@ -29,42 +30,50 @@ def algo_part_one(input_file_name) -> int:
                 break
 
         if game_possible:
-            print(f'game {index + 1} is possible')
             sum_val += (index + 1)
 
-    print(f'sum is {sum_val}')
     return sum_val
 
 
+# what is the fewest number of cubes of each color that
+# could have been in the bag to make the game possible
 def algo_part_two(input_file_name) -> int:
     print("running algo part two..." + input_file_name)
 
     lines = read_file_to_list(input_file_name)
 
     sum_val = 0
-    # for line in lines:
+    for line in lines:
+        game = line[8:]
+
+        game_min_col = {'red': -1, 'green': -1, 'blue': -1}
+
+        rounds = game.split(';')
+        for r in rounds:
+            pairs = re.findall(r'\d+\s\w+', r)
+            for p in pairs:
+                (amount, color) = str(p).split(' ')
+                if int(amount) > game_min_col.get(color):
+                    game_min_col[color] = int(amount)
+
+        # The power of a set of cubes is equal to the numbers
+        # of red, green, and blue cubes multiplied together
+        power = game_min_col.get('red') * game_min_col.get('green') * game_min_col.get('blue')
+        sum_val += power
 
     return sum_val
 
 
-def read_file_to_list(file) -> list[str]:
-    instructions_raw = open(file).readlines()
-    instructions_lines = [line.strip() for line in instructions_raw]
-    return instructions_lines
-
-
 if __name__ == '__main__':
     day = 2
-    debug = False
-    trace = False
     test_input_file = f'input/day{day}/testInput.txt'
-    test_input_file_p1 = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    assert 8 == algo_part_one(test_input_file_p1)
+    assert 8 == algo_part_one(test_input_file)
     print(f'result: {algo_part_one(input_file)}')
     assert 2085 == algo_part_one(input_file)
 
     # part 2
-    # assert 281 == algo_part_two(test_input_file)
-    # assert 55291 == algo_part_two(input_file)
+    assert 2286 == algo_part_two(test_input_file)
+    print(f'result: {algo_part_two(input_file)}')
+    assert 79315 == algo_part_two(input_file)

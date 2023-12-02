@@ -1,6 +1,8 @@
-def algo(input_file_name) -> int:
-    print("running algo...")
+from common import read_file_to_list
 
+
+def algo_part_one(input_file_name) -> int:
+    print("running algo part one..." + input_file_name)
     lines = read_file_to_list(input_file_name)
 
     for line in lines:
@@ -9,10 +11,9 @@ def algo(input_file_name) -> int:
     return 42
 
 
-def read_file_to_list(file) -> list[str]:
-    instructions_raw = open(file).readlines()
-    instructions_lines = [line.strip() for line in instructions_raw]
-    return instructions_lines
+def algo_part_two(input_file_name) -> int:
+    print("running algo part two..." + input_file_name)
+    return algo_part_one(input_file_name)
 
 
 if __name__ == '__main__':
@@ -22,8 +23,11 @@ if __name__ == '__main__':
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    # run with test file and expect given result
-    assert 42 == algo(test_input_file)
+    assert 42 == algo_part_one(test_input_file)
+    print(f'result: {algo_part_one(input_file)}')
+    assert 42 == algo_part_one(input_file)
 
-    # run with non-test file, and print the result
-    print(f'result: {algo(input_file)}')
+    # part 2
+    assert 42 == algo_part_two(test_input_file)
+    print(f'result: {algo_part_two(input_file)}')
+    assert 42 == algo_part_two(input_file)
