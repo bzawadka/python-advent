@@ -12,7 +12,7 @@ def algo_part_one(input_file_name) -> int:
     grid = read_file_to_list(input_file_name)
 
     symbols = ['*', '$', '#', '@', '-', '%', '&', '/', '=', '+']
-    valid_part_numbers = set()
+    valid_part_numbers = list()
     for y, row in enumerate(grid):
 
         for part_number_match in re.finditer(r"\d+", row):
@@ -62,7 +62,7 @@ def algo_part_one(input_file_name) -> int:
 
             for ca in chars_around:
                 if ca in symbols:
-                    valid_part_numbers.add(int(part_number))
+                    valid_part_numbers.append(int(part_number))
                     print(f'valid part: {part_number}')
 
         # for y, col in enumerate(row):
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    assert 4361 == algo_part_one(test_input_file)
-    # print(f'result: {algo_part_one(input_file)}')
+    # assert 4361 == algo_part_one(test_input_file)
+    print(f'result: {algo_part_one(input_file)}')
     # assert 42 == algo_part_one(input_file)
     # 328113
     # part 2
