@@ -1,1 +1,1 @@
-# python-advent
+# AdventOfCode.com in Python
