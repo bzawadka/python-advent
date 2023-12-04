@@ -15,16 +15,11 @@ def algo_part_one(input_file_name) -> int:
     for line in lines:
         card_id_match = re.search(r'\d+', line)
         card_id_end_idx = card_id_match.end()
-        card_id = line[card_id_match.start():card_id_end_idx]
         division_sign_idx = re.search(r'\|', line).start()
 
         winning_numbers = set(re.findall(r'\d+', line[card_id_end_idx:division_sign_idx]))
-        my_numbers = re.findall(r'\d+', line[division_sign_idx:])
-
-        numbers_won_counter = 0
-        for n in my_numbers:
-            if n in winning_numbers:
-                numbers_won_counter += 1
+        my_numbers = set(re.findall(r'\d+', line[division_sign_idx:]))
+        numbers_won_counter = len(my_numbers & winning_numbers)
 
         if numbers_won_counter:
             points_total += pow(2, numbers_won_counter - 1)
@@ -48,12 +43,9 @@ def algo_part_two(input_file_name) -> int:
 
         division_sign_idx = re.search(r'\|', line).start()
         other_numbers = set(re.findall(r'\d+', line[card_id_end_idx:division_sign_idx]))
-        my_numbers = re.findall(r'\d+', line[division_sign_idx:])
+        my_numbers = set(re.findall(r'\d+', line[division_sign_idx:]))
 
-        matching_numbers_counter = 0
-        for n in my_numbers:
-            if n in other_numbers:
-                matching_numbers_counter += 1
+        matching_numbers_counter = len(my_numbers & other_numbers)
 
         card_ids_to_add = set()
         if matching_numbers_counter:
