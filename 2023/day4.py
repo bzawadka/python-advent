@@ -26,24 +26,60 @@ def algo_part_one(input_file_name) -> int:
             if n in winning_numbers:
                 numbers_won_counter += 1
 
-        print(
-            f'card {card_id} div at {division_sign_idx} winning {winning_numbers} mine {my_numbers} won {numbers_won_counter}')
-
         if numbers_won_counter:
             points_total += pow(2, numbers_won_counter - 1)
 
     return points_total
 
 
+# There's no such thing as "points". Instead, scratchcards only cause you to win more scratchcards
+# equal to the number of winning numbers you have.
+# how many total scratchcards do you end up with?
 def algo_part_two(input_file_name) -> int:
     print("running algo part two..." + input_file_name)
-    return algo_part_one(input_file_name)
+    lines = read_file_to_list(input_file_name)
+
+    cards_counter = {(i + 1): 1 for i in range(len(lines))}
+
+    for line in lines:
+        card_id_match = re.search(r'\d+', line)
+        card_id_end_idx = card_id_match.end()
+        card_id = int(line[card_id_match.start():card_id_end_idx])
+
+        division_sign_idx = re.search(r'\|', line).start()
+        other_numbers = set(re.findall(r'\d+', line[card_id_end_idx:division_sign_idx]))
+        my_numbers = re.findall(r'\d+', line[division_sign_idx:])
+
+        matching_numbers_counter = 0
+        for n in my_numbers:
+            if n in other_numbers:
+                matching_numbers_counter += 1
+
+        card_ids_to_add = set()
+        if matching_numbers_counter:
+            card_ids_to_add = [i for i in range(card_id + 1, card_id + matching_numbers_counter + 1)]
+
+        how_many_of_me_exist = cards_counter.get(card_id)
+        number_of_copies_to_add = how_many_of_me_exist
+
+        for c_id in card_ids_to_add:
+            tmp = cards_counter.get(c_id)
+            tmp += number_of_copies_to_add
+            cards_counter[c_id] = tmp
+
+        if debug:
+            print(f'card {card_id} has {matching_numbers_counter} matches, so adding cards {card_ids_to_add}')
+
+    cards_total = 0
+    for key, value in cards_counter.items():
+        cards_total += value
+
+    return cards_total
 
 
 if __name__ == '__main__':
     day = 4
     debug = False
-    trace = False
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
@@ -52,6 +88,7 @@ if __name__ == '__main__':
     assert 20667 == algo_part_one(input_file)
 
     # part 2
-    # assert 42 == algo_part_two(test_input_file)
-    # print(f'result: {algo_part_two(input_file)}')
-    # assert 42 == algo_part_two(input_file)
+    print(f'result: {algo_part_two(test_input_file)}')
+    assert 30 == algo_part_two(test_input_file)
+    print(f'result: {algo_part_two(input_file)}')
+    assert 5833065 == algo_part_two(input_file)
