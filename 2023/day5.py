@@ -2,7 +2,7 @@ import re
 
 
 # --- Day 5: If You Give A Seed A Fertilizer ---
-def algo_part_one(input_file_name) -> int:
+def algo_part_one(input_file_name: str) -> int:
     print("running algo part one..." + input_file_name)
     input_lines = open(input_file_name).readlines()
     seeds = [eval(i) for i in re.findall(r'\d+', input_lines[0])]
@@ -28,7 +28,7 @@ def seed_in_range(seed: int, range_from: int, length: int):
     return range_from <= seed <= range_from + length
 
 
-def algo_part_two(input_file_name) -> int:
+def algo_part_two(input_file_name: str) -> int:
     print("running algo part two..." + input_file_name)
     input_lines = open(input_file_name).readlines()
     seeds_with_ranges = [eval(i) for i in re.findall(r'\d+', input_lines[0])]
@@ -37,10 +37,11 @@ def algo_part_two(input_file_name) -> int:
     maps = extract_maps(input_lines)
 
     min_location = 9999999999
-    for seed_index, s in enumerate(seeds):
+    for seed_index, seed in enumerate(seeds):
+        print(f'seed {seed} and its ancestors...')
         r = ranges[seed_index]
-        for i in range(0, r):
-            actual_seed = s + i
+        for offset in range(0, r):
+            actual_seed = seed + offset
             location = calculate_end_location_for_seed(maps, actual_seed)
             if location < min_location:
                 min_location = location
@@ -49,7 +50,7 @@ def algo_part_two(input_file_name) -> int:
     return min_location
 
 
-def calculate_end_location_for_seed(maps, s):
+def calculate_end_location_for_seed(maps, s: int):
     location = s
     for m in maps:
         for map_line in m:
@@ -60,7 +61,7 @@ def calculate_end_location_for_seed(maps, s):
                 location = location + offset
                 break
 
-    if debug:
+    if trace:
         print(f'seed {s} location {location}')
     return location
 
@@ -80,7 +81,8 @@ def extract_maps(input_lines: list):
 
 if __name__ == '__main__':
     day = 5
-    debug = False
+    debug = True
+    trace = False
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
