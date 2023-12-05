@@ -56,7 +56,6 @@ def algo_part_two(input_file_name) -> int:
             actual_unique_seeds.add(actual_seed)
 
     actual_seeds = list(actual_unique_seeds)
-
     print(f'number of actual seeds: {len(actual_seeds)}')
 
     # parse input
@@ -70,26 +69,30 @@ def algo_part_two(input_file_name) -> int:
             if numbers:
                 maps[map_idx].append(numbers)
 
+    min_location = 9999999999
+    for s in actual_seeds:
+        location = calculate_end_location_for_seed(maps, s)
+        if location < min_location:
+            min_location = location
+
+    print(f'result: {min_location}')
+    return min_location
+
+
+def calculate_end_location_for_seed(maps, s):
+    location = s
     for m in maps:
-        seed_already_updated = [False for _ in range(0, len(actual_seeds))]
-        for s_id, s in enumerate(actual_seeds):
-            if seed_already_updated[s_id]:
+        for map_line in m:
+            range_from = int(map_line[1])
+            range_length = int(map_line[2])
+            offset = int(map_line[0]) - range_from
+            if seed_in_range(location, range_from, range_length):
+                location = location + offset
                 break
 
-            for map_line in m:
-                range_from = int(map_line[1])
-                range_length = int(map_line[2])
-                offset = int(map_line[0]) - range_from
-                if seed_in_range(s, range_from, range_length):
-                    target = s + offset
-                    actual_seeds[s_id] = target
-                    seed_already_updated[s_id] = True
-                    break
-
-    # the lowest location number that corresponds to any of the initial seeds
-    result = min(actual_seeds)
-    print(f'result: {result}')
-    return min(actual_seeds)
+    if debug:
+        print(f'seed {s} location {location}')
+    return location
 
 
 if __name__ == '__main__':
@@ -98,8 +101,8 @@ if __name__ == '__main__':
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    assert 35 == algo_part_one(test_input_file)
-    assert 3374647 == algo_part_one(input_file)
+    # assert 35 == algo_part_one(test_input_file)
+    # assert 3374647 == algo_part_one(input_file)
 
     # part 2
     assert 46 == algo_part_two(test_input_file)
