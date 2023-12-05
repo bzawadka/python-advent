@@ -5,7 +5,7 @@ import re
 def algo_part_one(input_file_name) -> int:
     print("running algo part one..." + input_file_name)
     input_lines = open(input_file_name).readlines()
-    seeds = re.findall(r'\d+', input_lines[0])
+    seeds = [eval(i) for i in re.findall(r'\d+', input_lines[0])]
     maps = extract_maps(input_lines)
 
     for m in maps:
@@ -14,8 +14,8 @@ def algo_part_one(input_file_name) -> int:
                 range_from = int(map_line[1])
                 range_length = int(map_line[2])
                 offset = int(map_line[0]) - range_from
-                if seed_in_range(int(s), range_from, range_length):
-                    seeds[s_id] = int(s) + offset
+                if seed_in_range(s, range_from, range_length):
+                    seeds[s_id] = s + offset
                     break
 
     # the lowest location number that corresponds to any of the initial seeds
@@ -31,16 +31,16 @@ def seed_in_range(seed: int, range_from: int, length: int):
 def algo_part_two(input_file_name) -> int:
     print("running algo part two..." + input_file_name)
     input_lines = open(input_file_name).readlines()
-    seeds_with_ranges = re.findall(r'\d+', input_lines[0])
+    seeds_with_ranges = [eval(i) for i in re.findall(r'\d+', input_lines[0])]
     seeds = seeds_with_ranges[0::2]
     ranges = seeds_with_ranges[1::2]
     maps = extract_maps(input_lines)
 
     min_location = 9999999999
     for seed_index, s in enumerate(seeds):
-        r = int(ranges[seed_index])
+        r = ranges[seed_index]
         for i in range(0, r):
-            actual_seed = int(s) + i
+            actual_seed = s + i
             location = calculate_end_location_for_seed(maps, actual_seed)
             if location < min_location:
                 min_location = location
