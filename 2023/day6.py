@@ -21,7 +21,7 @@ def algo_part_two(input_file_name: str) -> int:
 
 
 if __name__ == '__main__':
-    day = 1
+    day = 6
     debug = False
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
