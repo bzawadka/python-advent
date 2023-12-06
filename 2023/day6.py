@@ -46,11 +46,13 @@ if __name__ == '__main__':
     day = 6
     debug = False
     test_input_file = f'input/day{day}/testInput.txt'
+    test_input_file2 = f'input/day{day}/testInput2.txt'
     input_file = f'input/day{day}/input.txt'
+    input_file2 = f'input/day{day}/input2.txt'
 
     assert 288 == algo_part_one(test_input_file)
     assert 170000 == algo_part_one(input_file)
 
     # part 2
-    # assert 42 == algo_part_two(test_input_file)
-    # assert 42 == algo_part_two(input_file)
+    assert 71503 == algo_part_two(test_input_file2)
+    assert 20537782 == algo_part_two(input_file2)
