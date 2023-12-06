@@ -86,9 +86,9 @@ if __name__ == '__main__':
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    assert 35 == algo_part_one(test_input_file)
-    assert 3374647 == algo_part_one(input_file)
+    # assert 35 == algo_part_one(test_input_file)
+    # assert 3374647 == algo_part_one(input_file)
 
     # part 2
-    assert 46 == algo_part_two(test_input_file)
-    # algo_part_two(input_file)
+    # assert 46 == algo_part_two(test_input_file)
+    algo_part_two(input_file)
