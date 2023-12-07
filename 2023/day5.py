@@ -92,3 +92,8 @@ if __name__ == '__main__':
     # part 2
     # assert 46 == algo_part_two(test_input_file)
     algo_part_two(input_file)
+    # seed 280775197 and its ancestors...
+    #  min location so far: 529571705
+    # seed 3229061264 and its ancestors...
+    #  min location so far: 386490336
+    # 386490336 is too high
