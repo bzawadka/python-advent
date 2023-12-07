@@ -33,9 +33,19 @@ def compare_hands(left, right):
         return 0
 
 
+# Five of a kind    AAAAA   7
+# Four of a kind    AA8AA   6
+# Full house        23332   5
+# Three of a kind   TTT98   4
+# Two pair          23432   3
+# One pair          A23A4   2
+# High card         23456   1
 def hand_type(hand: str) -> int:
     card_strengths = {"A": 13, "K": 12, "Q": 11, "J": 10, "T": 9, "9": 8,
                       "8": 7, "7": 6, "6": 5, "5": 4, "4": 3, "3": 2, "2": 1}
+
+    if len(set(hand)) == 1:
+        return 7
 
     return -1
 

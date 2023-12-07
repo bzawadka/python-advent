@@ -97,3 +97,4 @@ if __name__ == '__main__':
     # seed 3229061264 and its ancestors...
     #  min location so far: 386490336
     # 386490336 is too high
+    # 6082852
