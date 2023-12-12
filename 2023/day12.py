@@ -25,24 +25,26 @@ def algo_part_one(input_file_name: str) -> int:
 def count_possible_arrangements(record: str, no_groups: list[int]):
     index = 0
 
-    show_possible_arrangements(index, record)
+    show_possible_arrangements(index, record, no_groups)
 
     return -1
 
 
 # ???.###
 # len == 7
-def show_possible_arrangements(index: int, record: str):
+def show_possible_arrangements(index: int, record: str, no_groups: list[int]):
     if index == len(record):
-        print(record)
+        number_of_spring_groups = re.findall(r'#+', record)
+        almost_valid = 'VALID' if len(number_of_spring_groups) == len(no_groups) else ''
+        print(f'{record}   {len(number_of_spring_groups)}    {almost_valid}')
         return
 
     match record[index]:
         case '.' | '#':
-            show_possible_arrangements(index + 1, record)
+            show_possible_arrangements(index + 1, record, no_groups)
         case '?':
-            show_possible_arrangements(index + 1, record[:index] + '.' + record[index + 1:])
-            show_possible_arrangements(index + 1, record[:index] + '#' + record[index + 1:])
+            show_possible_arrangements(index + 1, record[:index] + '.' + record[index + 1:], no_groups)
+            show_possible_arrangements(index + 1, record[:index] + '#' + record[index + 1:], no_groups)
 
     return
 
