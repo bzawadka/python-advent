@@ -1,7 +1,4 @@
-import re
-
 from common import read_file_to_list
-import numpy as np
 
 
 # --- Day 13: Point of Incidence ---
@@ -28,32 +25,25 @@ def algo_part_one(input_file_name: str) -> int:
     return result
 
 
-def run_algo(lines: list[str], id: int) -> int:
-    print(f'test set {id}')
+def run_algo(lines: list[str], test_set_id: int) -> int:
+    # horizontal
+    r = find_mirror_in(lines)
+    if r > 0:
+        return r * 100
 
     # vertical
     transposed = [''.join(s) for s in zip(*lines)]
 
-    for i in range(1, len(transposed) - 1):
-        found = False
-        up = i
-        down = i + 1
-        while up >= 0 and down < len(transposed):
-            if transposed[up] == transposed[down]:
-                found = True
-                up -= 1
-                down += 1
-            else:
-                found = False
-                break
+    r = find_mirror_in(transposed)
+    if r > 0:
+        return r
 
-        if found:
-            result = (i + 1)
-            print(f'found! column {i} -> {result}')
-            return result
+    print('     not great')
+    return 0
 
-    # horizontal
-    for i in range(1, len(lines) - 1):
+
+def find_mirror_in(lines: list[str]) -> int:
+    for i in range(0, len(lines) - 1):
         found = False
         up = i
         down = i + 1
@@ -67,11 +57,9 @@ def run_algo(lines: list[str], id: int) -> int:
                 break
 
         if found:
-            result = (i + 1) * 100
-            print(f'found! row {i} -> {result}')
-            return result
+            number_of_lines_before_the_mirror = (i + 1)
+            return number_of_lines_before_the_mirror
 
-    print('     not great')
     return 0
 
 
@@ -86,11 +74,12 @@ if __name__ == '__main__':
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    # assert 405 == algo_part_one(test_input_file)
-    algo_part_one(input_file)
-
-    # 15564 - That's not the right answer; your answer is too low
-    # 32866  - That's not the right answer; your answer is too low
+    # lines = ["alane", "lapcu", "kotaf"]
+    # transposed = [''.join(s) for s in zip(*lines)]
+    #
+    # print(transposed)
+    assert 405 == algo_part_one(test_input_file)
+    assert 33780 == algo_part_one(input_file)
 
     # part 2
     # assert 42 == algo_part_two(test_input_file)
