@@ -45,6 +45,7 @@ def run_algo(lines: list[str], test_set_id: int) -> int:
 def find_mirror_in(lines: list[str]) -> int:
     for i in range(0, len(lines) - 1):
         found = False
+        mirror_used = False
         up = i
         down = i + 1
         while up >= 0 and down < len(lines):
@@ -52,17 +53,39 @@ def find_mirror_in(lines: list[str]) -> int:
                 found = True
                 up -= 1
                 down += 1
+            elif not mirror_used and differ_by_one_sign(lines[up], lines[down]):
+                found = True
+                up -= 1
+                down += 1
+                mirror_used = True
             else:
                 found = False
                 break
 
         if found:
             number_of_lines_before_the_mirror = (i + 1)
+            print(f'found {number_of_lines_before_the_mirror}')
             return number_of_lines_before_the_mirror
 
     return 0
 
 
+def differ_by_one_sign(s1: str, s2: str) -> bool:
+    diff_cnt = 0
+    for i, c in enumerate(s1):
+        if c != s2[i]:
+            diff_cnt += 1
+        if diff_cnt > 1:
+            return False
+
+    diff_by_one = diff_cnt == 1
+    if diff_by_one:
+        print(f'     diff by one: {s1} {s2}')
+    return diff_by_one
+
+
+# You resume walking through the valley of mirrors and - SMACK! - run directly into one.
+# every mirror has exactly one smudge: exactly one . or # should be the opposite type
 def algo_part_two(input_file_name: str) -> int:
     print("running algo part two..." + input_file_name)
     return algo_part_one(input_file_name)
@@ -78,9 +101,17 @@ if __name__ == '__main__':
     # transposed = [''.join(s) for s in zip(*lines)]
     #
     # print(transposed)
-    assert 405 == algo_part_one(test_input_file)
-    assert 33780 == algo_part_one(input_file)
+    # assert 405 == algo_part_one(test_input_file)
+    # assert 33780 == algo_part_one(input_file)
 
     # part 2
-    # assert 42 == algo_part_two(test_input_file)
-    # assert 42 == algo_part_two(input_file)
+    assert 400 == algo_part_two(test_input_file)
+    algo_part_two(input_file)
+
+    # 33913 That's not the right answer; your answer is too high
+    # 33846 (guess)- That's not the right answer; your answer is too high
+    # 33813 - That's not the right answer.
+    # 33814 - That's not the right answer
+    # 33812 - That's not the right answer
+# 33815
+# 33816
