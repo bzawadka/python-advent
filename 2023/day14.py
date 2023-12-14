@@ -3,6 +3,7 @@ import re
 from common import read_file_to_list
 
 
+# --- Day 14: Parabolic Reflector Dish ---
 def algo_part_one(input_file_name: str) -> int:
     print("running algo part one..." + input_file_name)
     lines = read_file_to_list(input_file_name)
