@@ -113,20 +113,14 @@ def algo_part_two(input_file_name: str) -> int:
     lines_raw = open(input_file_name).readlines()
     dish = [list(line.strip()) for line in lines_raw]
 
-    dish = tilt_left(dish)
+    for i in range(210):
+        dish = tilt_north(dish)
+        dish = tilt_left(dish)
+        dish = tilt_south(dish)
+        dish = tilt_right(dish)
+        print(f'{i} -> {calculate_load(dish)}')
 
-    print(dish[0])
-    print(dish[1])
-    print(dish[2])
-    print(dish[3])
-    print(dish[4])
-    print(dish[5])
-    print(dish[6])
-    print(dish[7])
-    print(dish[8])
-    print(dish[9])
-
-    return calculate_load(dish)
+    return 31
 
 
 if __name__ == '__main__':
@@ -138,9 +132,18 @@ if __name__ == '__main__':
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
-    # assert 136 == algo_part_one(test_input_file)
-    # assert 110090 == algo_part_one(input_file)
+    assert 136 == algo_part_one(test_input_file)
+    assert 110090 == algo_part_one(input_file)
 
     # part 2
     algo_part_two(test_input_file)
-    # assert 42 == algo_part_two(input_file)
+    # In the above example, after 1000000000 cycles, the total load on the north support beams is 64.
+
+    algo_part_two(input_file)
+    # Run the spin cycle for 1000000000 cycles. Afterward, what is the total load on the north support beams?
+
+    # result: 95254; cycle starts at index 114
+    cycle2 = [95162, 95189, 95221, 95254, 95285, 95304, 95321, 95320, 95331, 95349, 95373, 95387, 95418, 95449, 95473,
+              95471, 95467, 95455, 95433, 95401, 95384, 95362, 95335, 95314, 95304, 95293, 95268, 95250, 95220, 95186,
+              95155, 95140, 95127, 95123, 95118, 95112, 95111, 95105, 95107, 95118, 95129, 95139]
+
