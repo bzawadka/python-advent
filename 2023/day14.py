@@ -35,7 +35,7 @@ def tilt_north(dish: [[]]) -> [[]]:
 
 
 def tilt_right(dish: [[]]) -> [[]]:
-    # going form left to right
+    # going form right to left
     for idy in range(0, len(dish)):
         row = dish[idy]
         if ROCK in row:
@@ -44,6 +44,26 @@ def tilt_right(dish: [[]]) -> [[]]:
                     # try to move it as much right as possible
                     target_x = idx
                     for x in range(idx + 1, len(row)):
+                        if dish[idy][x] == EMPTY_SPACE:
+                            target_x = x
+                            continue
+                        if dish[idy][x] == HARD_ROCK or dish[idy][x] == ROCK:
+                            break
+                    # move the rock
+                    if idx != target_x:
+                        dish[idy][target_x] = ROCK
+                        dish[idy][idx] = EMPTY_SPACE
+    return dish
+
+
+def tilt_left(dish: [[]]) -> [[]]:
+    for idy in range(0, len(dish)):
+        row = dish[idy]
+        if ROCK in row:
+            for idx in range(1, len(row)):
+                if dish[idy][idx] == ROCK:
+                    target_x = idx
+                    for x in range(idx - 1, -1, -1):
                         if dish[idy][x] == EMPTY_SPACE:
                             target_x = x
                             continue
@@ -93,7 +113,7 @@ def algo_part_two(input_file_name: str) -> int:
     lines_raw = open(input_file_name).readlines()
     dish = [list(line.strip()) for line in lines_raw]
 
-    dish = tilt_right(dish)
+    dish = tilt_left(dish)
 
     print(dish[0])
     print(dish[1])
