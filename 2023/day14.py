@@ -1,45 +1,49 @@
-import re
-
-from common import read_file_to_list
-
-
 # --- Day 14: Parabolic Reflector Dish ---
+# The dish is made up of many small mirrors
 def algo_part_one(input_file_name: str) -> int:
     print("running algo part one..." + input_file_name)
     lines_raw = open(input_file_name).readlines()
     dish = [list(line.strip()) for line in lines_raw]
 
-    # tilt north
+    dish = tilt_north(dish)
+    load = calculate_load(dish)
+
+    print(f'result: {load}')
+    return load
+
+
+def tilt_north(dish) -> [[]]:
     for idy, l in enumerate(dish):
         if idy == 0:
             continue
 
-        if 'O' in l:
+        if ROCK in l:
             for idx, c in enumerate(l):
-                if c == 'O':
+                if c == ROCK:
                     # try to move it as much north as possible
                     target_y = idy
                     for y in range(idy - 1, -1, -1):
-                        if dish[y][idx] == '.':
+                        if dish[y][idx] == EMPTY_SPACE:
                             target_y = y
                             continue
-                        if dish[y][idx] == '#' or dish[y][idx] == 'O':
+                        if dish[y][idx] == HARD_ROCK or dish[y][idx] == ROCK:
                             break
                     # move the rock
                     if idy != target_y:
-                        dish[target_y][idx] = 'O'
-                        dish[idy][idx] = '.'
+                        dish[target_y][idx] = ROCK
+                        dish[idy][idx] = EMPTY_SPACE
+    return dish
 
-    # The amount of load caused by a single rounded rock (O) is equal to the number of rows
-    # from the rock to the south edge of the platform, including the row the rock is on
-    result = 0
+
+# The amount of load caused by a single rounded rock (O) is equal to the number of rows
+# from the rock to the south edge of the platform, including the row the rock is on
+def calculate_load(dish) -> int:
+    total_load = 0
     for idy, l in enumerate(dish):
-        r = (len(dish) - idy) * l.count('O')
-        result += r
-
+        load = (len(dish) - idy) * l.count(ROCK)
+        total_load += load
     # The total load is the sum of the load caused by all the rounded rocks
-    print(f'result: {result}')
-    return result
+    return total_load
 
 
 def algo_part_two(input_file_name: str) -> int:
@@ -49,7 +53,10 @@ def algo_part_two(input_file_name: str) -> int:
 
 if __name__ == '__main__':
     day = 14
-    debug = False
+    ROCK = 'O'
+    HARD_ROCK = '#'
+    EMPTY_SPACE = '.'
+
     test_input_file = f'input/day{day}/testInput.txt'
     input_file = f'input/day{day}/input.txt'
 
