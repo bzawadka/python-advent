@@ -30,6 +30,7 @@ class Node:
         if root is None:
             return
         queue = [root]
+        visited = []
 
         while len(queue) > 0:
             cur_node = queue.pop(0)
@@ -40,7 +41,10 @@ class Node:
             if cur_node.right is not None:
                 queue.append(cur_node.right)
 
-            print(queue)
+            visited.append(cur_node.val)
+            print(f'[in {cur_node}] queue: {queue}')
+
+        print(f'visited: {visited}')
 
 
 if __name__ == '__main__':
